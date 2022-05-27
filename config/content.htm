@@ -1,203 +1,151 @@
 <h1>About</h1>
 <h1>Progress</h1>
-<h2>week1-5</h2>
+<h2>week1-12</h2>
 <h5>week1</h5>
 <p>創建wcm2022倉儲，並建立網站，<span>設定SSH。</span></p>
 <h5>week2</h5>
-<p>test</p>
-<h5>week3</h5>
-<h5>week4</h5>
-<h5>week5</h5>
-<h2>week6-10</h2>
-<h5>week6</h5>
+<p>使用wink練習。</p>
 <h5>week7</h5>
-<h5>week8</h5>
-<h5>week9</h5>
-<h5>week10</h5>
-<h2>week11-15</h2>
-<!-- 導入 Brython 程式庫-->
-<script src="/static/brython.js"></script>
+<p><span><span>架設nginx服務器設定。</span></span></p>
+<p><span><span></span></span></p>
+<h2>week13</h2>
+<h2>week14</h2>
+<script src="/static/brython.js">
+</script>
 <script src="/static/brython_stdlib.js"></script>
-<!-- 啟動 Brython -->
+<!-- for ggame -->
+<p>
+<script src="/static/jquery-3.3.1.min.js"></script>
+<script src="/static/jquery-ui.1.12.1.min.js"></script>
+<script src="/static/pixi-3.0.5.min.js"></script>
+<script src="/static/buzz-1.2.1.js"></script>
+<script src="/static/bs.js"></script>
+<script src="/downloads/brython_modules.js"></script>
+</p>
+<!-- Cango 程式庫 -->
+<p>
+<script src="/static/Cango-24v03-min.js"></script>
+<script src="/static/CangoAxes-6v01-min.js"></script>
+<script src="/static/gearUtils-09.js"></script>
+<script src="/static/SVGpathUtils-6v03-min.js"></script>
+<script src="/static/sylvester.js"></script>
+<script src="/static/PrairieDraw.js"></script>
+</p>
+<!-- for Konva 程式庫 -->
+<p>
+<script src="/static/konva.min.js"></script>
 <script>
-window.onload=function(){brython();}
+window.onload=function(){
+brython({debug:1, pythonpath:['/static/','./../downloads/py/']});
+}
 </script>
-<h5>week13</h5>
-<p>遊戲1</p>
+</p>
+<p><!-- 導入 FileSaver 與 filereader --></p>
+<p>
+<script src="/static/ace/FileSaver.min.js" type="text/javascript"></script>
+<script src="/static/ace/filereader.js" type="text/javascript"></script>
+</p>
+<p><!-- 導入 ace --></p>
+<p>
+<script src="/static/ace/ace.js" type="text/javascript"></script>
+<script src="/static/ace/ext-language_tools.js" type="text/javascript"></script>
+<script src="/static/ace/mode-python3.js" type="text/javascript"></script>
+<script src="/static/ace/snippets/python.js" type="text/javascript"></script>
+</p>
+<p><!-- 請注意, 這裡使用 Javascript 將 localStorage["py_src"] 中存在近端瀏覽器的程式碼, 由使用者決定存檔名稱--></p>
+<p>
+<script type="text/javascript">
+function doSave(storage_id, filename){
+    var blob = new Blob([localStorage[storage_id]], {type: "text/plain;charset=utf-8"});
+    filename = document.getElementById(filename).value
+    saveAs(blob, filename+".py");
+}
+</script>
+</p>
+<p><!-- ######################  editor1 開始 ###################### --></p>
+<p><!-- 用來顯示程式碼的 editor 區域 --></p>
+<div id="kw_editor1" style="width: 600px; height: 300px;"></div>
+<p><!-- 以下的表單與按鈕與前面的 Javascript doSave 函式以及 FileSaver.min.js 互相配合 --></p>
+<p><!-- 存擋表單開始 --></p>
+<form><label>Filename: <input id="kw_filename" placeholder="input file name" type="text"/>.py</label> <input onclick="doSave('kw_py_src1', 'kw_filename1');" type="submit" value="Save"/></form>
+<p><!-- 存擋表單結束 --></p>
+<p></p>
+<p><!-- 執行與清除按鈕開始 --></p>
+<p><button id="kw_run1">Run</button> <button id="kw_show_console1">Output</button> <button id="kw_clear_console1">清除輸出區</button><button id="clear_bd1">清除繪圖區</button><button onclick="window.location.reload()">Reload</button></p>
+<p><!-- 執行與清除按鈕結束 --></p>
+<p></p>
+<p><!-- 程式執行 ouput 區 --></p>
+<div style="width: 100%; height: 100%;"><textarea autocomplete="off" id="kw_console1"></textarea></div>
+<p><!-- Brython 程式執行的結果, 都以 brython_div 作為切入位置 --></p>
+<p><!-- 這裡的畫布 id 為 brython_div --></p>
+<div id="brython_div"></div>
+<!-- graphics-column is for ggame -->
+<div class="col-md-0" height="1" id="graphics-column" width="1"></div>
+<p><!-- ######################  editor1 結束 ###################### --></p>
+<p><!-- 以下可以開始利用 editor1 的設定編寫對應 Brython 程式 -->
 <script type="text/python3">
-#print("可執行 Brython")
-# 這個程式用於 demo 綠色方塊沿著特定網格路徑行走
-# 從 Brython 程式庫中的 browser 模組導入 document 類別, 並以簡寫設定為 doc
 from browser import document as doc
-# 從 browser 模組導入 html 類別, 主要用於建立 CANVAS 標註物件, 並插入頁面中
-from browser import html
-# 用於定時執行特定函式
-import browser.timer
-# 導入亂數模組
-from random import random, randint
+import ace
 
-# 利用 html 建立一個 CANVAS 標註物件, 與變數 canvas 對應
-canvas = html.CANVAS(width = 600, height = 600)
-# 將 canvas 標註的 id 設為 "canvas"
-canvas.id = "canvas"
-# 將 document 中 id 為 "brython_div" 的標註 
-# 設為與 brython_div 變數對應
-brython_div = doc["brython_div"]
-# 將 canvas 標註放入 brython_div 所在位置
-# 頁面中原本就已經放入 <div id="brython_div"></div> 標註
-brython_div <= canvas
-# 將頁面中 id 為 canvas 的 CANVAS 設為與 canvas 變數對應
-canvas = doc["canvas"]
-# 將 canvas 的 2d 繪圖 context 命名為 ctx
-ctx = canvas.getContext("2d")
+# 清除畫布
+def clear_bd1(ev):
+    # 注意這裡清除的畫布 id 為 brython_div
+    bd = doc["brython_div"]
+    bd.clear()
+Ace1 = ace.Editor(editor_id="kw_editor1", console_id="kw_console1", container_id="kw__container1", storage_id="kw_py_src1" )
+# 從 gist 取出程式碼後, 放入 editor 作為 default 程式
+def run1():
+    # 利用 get 取下 src 變數值
+    try:
+        url = doc.query["src"]
+    except:
+        url = "https://gist.githubusercontent.com/s40723226/29464f1dac26e551adc698b68cbe3ac5/raw/44adfd66d5c97e7e49965d6269d8e9c60c8374be/14"
+    prog = open(url).read()
 
-# 建立一個 dRect() 函式
-# s default 為 1, c defaul 為紅色
-def dRect(lux, luy, w, h, s=1, c='#ff0000'):
-    ctx.lineWidth = s
-    ctx.strokeStyle = c
-    ctx.beginPath();
-    ctx.rect(lux, luy, w, h)
-    ctx.stroke();
-    
-# 建立畫直線函式
-def draw_line(x1, y1, x2, y2, color="#ff0000"):
-    ctx.beginPath()
-    ctx.moveTo(x1, y1)
-    ctx.lineTo(x2, y2)
-    ctx.strokeStyle = color
-    ctx.stroke()
+    # 將程式載入編輯區
+    Ace1.editor.setValue(prog)
+    Ace1.editor.scrollToRow(0)
+    Ace1.editor.gotoLine(0)
+    # 直接執行程式
+    #ns = {'__name__':'__main__'}
+    #exec(prog, ns)
+    # 按下 run 按鈕
+    Ace1.run()
 
-# 建立 write Text 函式
-def wText(x, y, t, s=14, c='#0000ff'):
-    ctx.font = str(s) + "px Arial";
-    ctx.fillText(t, x, y)
-
-# 定義畫格線的函式
-def grid(startx, starty, w, h, wnum, hnum, pixel=1, color="#ff0000"):
-    # 利用迴圈與座標增量繪圖
-    # 因為輸入 wnum 與 hnum 為格子數, 畫格線數則需加上 1
-    for i in range(wnum+1):
-        for j in range(hnum+1):
-            # 畫上下直線
-            yend = starty + h*(hnum)
-            xend = startx + w*(wnum)
-            x = startx + i*w
-            draw_line(x, starty, x, yend, color)
-            # 畫左右直線
-            y = starty + j*h
-            draw_line(startx, y, xend, y, color)
-            #wText(w/2-10, y-w/2, str(j))
-
-# 從兩個座標點求中心點座標
-def center(lx, ly, rx, ry):
-    # lx is x coord of the left up corner
-    # rx is the x coord of th right down corner
-    x = (lx + rx)/2
-    y = (ly + ry)/2
-    return x, y
-    
-# 畫出填色方塊
-def draw_rect(gx, gy, gw, gh, color="lime"):
-    # gx is the grid coord at x direction
-    # gy is the grid coord at y direction
-    # gw is the with of the green rect
-    # gh is the height of the green rect
-    lx = origx + (gx-1)*w
-    ly = origy + (gy-1)*h
-    rx = origx + gx*w
-    ry = origy + gy*h
-    cx, cy = center(lx, ly, rx, ry)
-    # glx is the x coord of the left corner
-    # gly is the y coord of the left corner
-    glx = cx - gw/2
-    gly = cy - gh/2
-    # 利用設定的顏色值畫出 rectangle
-    ctx.fillStyle = color
-    ctx.fillRect(glx, gly, gw, gh)
-
-# 以白色覆蓋位於 (nowx, nowy) 
-# 且比目標方塊長寬各大於 1 pixel的方塊
-def wipe():
-    draw_rect(nowx, nowy, 30+1, 30+1, color="white")
-
-# 畫出位於 (nowx, nowy) 的綠色方塊
-def draw():
-    draw_rect(nowx, nowy, 30, 30, color="lime")
-
-# 繞著外圍行走
-def walk():
-    global stepx, stepy
-    # 向下
-    if nowy < hnum and nowx == 1:
-        stepx = 0
-        stepy = 1
-    # 向右
-    elif nowx < wnum and nowy == hnum:
-        stepx = 1
-        stepy = 0
-    # 向上
-    elif nowy == hnum and nowx == wnum:
-        stepx = 0
-        stepy = -1
-    # 向左
-    elif nowx == wnum and nowy == 1:
-        stepx = -1
-        stepy = 0
-        
-# 每隔短暫時間即呼叫執行一次的函式
-def game():
-    # 因 nowx 與 nowy 在函式外宣告
-    # 且在函式內改變對應值, 因此需宣告為 global
-    global nowx, nowy
-    walk()
-    wipe()
-    nowx += stepx
-    nowy += stepy
-    draw()
-
-# 綠色方塊起點座標與 x 及 y 方向的座標增量
-nowx = 1
-nowy = 1
-stepx = 0
-stepy = 0
-# 設定格數
-# width 方向格子數
-wnum = 15
-# height 方向格子數
-hnum = 15
-# 設定線寬
-pixel = 1
-# 設定 w 寬度
-w = int(canvas.width/wnum) - pixel
-# 設定 h 高度
-h = int(canvas.height/hnum) - pixel
-# 設定繪圖座標點起點位置
-origx = 1
-origy = 1
-# 利用 grid 函式畫出格線
-grid(origx, origy, w, h, wnum, hnum, pixel=1, color="black")
-
-'''
-# 利用 draw_rect 以 grid 座標畫出正方形, 內建為 lime
-draw_rect(3, 3, 30, 30)
-
-# 利用隨機亂數產生五個紅色方塊
-# wnum 與 hnum 為 x 與 y 方向的格子個數
-# w 與 h 方向上的方塊 pixel 數
-wrect_size = 30
-hrect_size = 30
-# 利用 for 迴圈產生五個紅色方塊
-for i in range(5):
-    xcoord = randint(1, wnum)
-    ycoord = randint(1, hnum)
-    draw_rect(xcoord, ycoord, wrect_size, hrect_size, color="red")
-'''
-browser.timer.set_interval(game, 100)
+# 執行程式, 顯示輸出結果與清除輸出結果及對應按鈕綁定
+doc['kw_run1'].bind('click', Ace1.run)
+doc['kw_show_console1'].bind('click', Ace1.show_console)
+doc['kw_clear_console1'].bind('click', Ace1.clear_console)
+doc['clear_bd1'].bind('click', clear_bd1)
+# 呼叫函式執行
+run1()
 </script>
-<div id="brython_div">
-</div>
-<h1>midterm</h1>
+<!-- 以上為內建程式, 頁面可透過 ?src=gist_url 執行 --></p>
+<p><!-- add 1 to 100 開始 -->
+<script type="text/python3">
+from browser import document as doc
+import ace
+
+# 清除畫布
+def clear_bd1(ev):
+    bd = doc["brython_div1"]
+    bd.clear()
+
+# 利用 ace 中的 Editor 建立 Ace 物件, 其中的輸入變數分別對應到頁面中的編輯區物件
+Ace2 = ace.Editor(editor_id="kw_editor1", console_id="kw_console1", container_id="kw__container1", storage_id="kw_py_src1" )
+
+class button2:
+    def __init__(self, url):
+        self.url = url
+
+    # 記得加入 event 輸入變數
+    def do(self,ev):
+        Ace2.editor.setValue(open(self.url).read())
+        Ace2.editor.scrollToRow(0)
+        Ace2.editor.gotoLine(0)
+        Ace2.run()
+</script>
+</p><h1>midterm</h1>
 <p></p>
 <p></p>
 <p><!--配合 Wink 檔案將 js 檔案設定如下--></p>
@@ -446,4 +394,5 @@ doc.addEventListener("keydown", key_down)
 doc.addEventListener("keyup", key_up)
 browser.timer.set_interval(do_game, fps)
 </script>
-<div id="brython_div"></div></div>
+<div id="brython_div"></div>
+</div>
