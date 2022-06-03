@@ -340,11 +340,12 @@ var winkVideoData = { dataVersion: 1, frameRate: 10, buttonFrameLength: 5, butto
 <source src="/downloads/w8_project.mp4" type="video/mp4"/></video>
 <div class="winkVideoOverlayClass"></div>
 <h1>Tetris</h1>
-<p><a href="/downloads/Tetris 線上遊戲加入計分系統報告.pdf">/downloads/Tetris 線上遊戲加入計分系統報告.pdf
+<p><a href="/downloads/Tetris 線上遊戲加入計分系統報告.pdf">/downloads/Tetris 線上遊戲加入計分系統報告.pdf</a></p>
+<p><a href="/downloads/Tetris 線上遊戲加入計分系統報告.pdf">/downloads/Tetris 線上遊戲加入計分系統報告2.pdf</a></p>
 <script src="/static/brython.js">
 </script>
 <script src="/static/brython_stdlib.js"></script>
-<!-- for ggame --></a></p>
+<!-- for ggame -->
 <p>
 <script src="/static/jquery-3.3.1.min.js"></script>
 <script src="/static/jquery-ui.1.12.1.min.js"></script>
@@ -353,7 +354,7 @@ var winkVideoData = { dataVersion: 1, frameRate: 10, buttonFrameLength: 5, butto
 <script src="/static/bs.js"></script>
 <script src="/downloads/brython_modules.js"></script>
 </p>
-<p><a href="/downloads/Tetris 線上遊戲加入計分系統報告.pdf"><!-- Cango 程式庫 --></a></p>
+<!-- Cango 程式庫 -->
 <p>
 <script src="/static/Cango-24v03-min.js"></script>
 <script src="/static/CangoAxes-6v01-min.js"></script>
@@ -362,7 +363,7 @@ var winkVideoData = { dataVersion: 1, frameRate: 10, buttonFrameLength: 5, butto
 <script src="/static/sylvester.js"></script>
 <script src="/static/PrairieDraw.js"></script>
 </p>
-<p><a href="/downloads/Tetris 線上遊戲加入計分系統報告.pdf"><!-- for Konva 程式庫 --></a></p>
+<!-- for Konva 程式庫 -->
 <p>
 <script src="/static/konva.min.js"></script>
 <script>
@@ -395,7 +396,12 @@ function doSave(storage_id, filename){
 </p>
 <p><!-- ######################  editor1 開始 ###################### --></p>
 <p><!-- 用來顯示程式碼的 editor 區域 --></p>
-<div id="kw_editor1" style="width: 600px; height: 300px;"></div>
+<div id="kw_editor1" style="width: 600px; height: 300px;">
+<div><textarea autocomplete="off" id="kw_console1"></textarea></div>
+<p><!-- Brython 程式執行的結果, 都以 brython_div 作為切入位置 --></p>
+<p><!-- 這裡的畫布 id 為 brython_div --></p>
+<div id="brython_div"></div>
+</div>
 <p><!-- 以下的表單與按鈕與前面的 Javascript doSave 函式以及 FileSaver.min.js 互相配合 --></p>
 <p><!-- 存擋表單開始 --></p>
 <form><label>Filename: <input id="kw_filename" placeholder="input file name" type="text"/>.py</label> <input onclick="doSave('kw_py_src1', 'kw_filename1');" type="submit" value="Save"/></form>
@@ -406,11 +412,8 @@ function doSave(storage_id, filename){
 <p><!-- 執行與清除按鈕結束 --></p>
 <p></p>
 <p><!-- 程式執行 ouput 區 --></p>
-<div style="width: 100%; height: 100%;"><textarea autocomplete="off" id="kw_console1"></textarea></div>
-<p><!-- Brython 程式執行的結果, 都以 brython_div 作為切入位置 --></p>
-<p><!-- 這裡的畫布 id 為 brython_div --></p>
-<div id="brython_div"></div>
-<p><a href="/downloads/Tetris 線上遊戲加入計分系統報告.pdf"><!-- graphics-column is for ggame --></a></p>
+<div style="width: 100%; height: 100%;"></div>
+<!-- graphics-column is for ggame -->
 <div class="col-md-0" height="1" id="graphics-column" width="1"></div>
 <p><!-- ######################  editor1 結束 ###################### --></p>
 <p><!-- 以下可以開始利用 editor1 的設定編寫對應 Brython 程式 -->
@@ -430,7 +433,7 @@ def run1():
     try:
         url = doc.query["src"]
     except:
-        url = "https://gist.githubusercontent.com/s40723226/8b653e0ade658a75faf5439c5f8206ec/raw/e72703d1c5e9309cc1dd1e8f6d876946d17efdd7/Tetris"
+        url = "https://gist.githubusercontent.com/s40723226/78d43472c2368b650b59fa13dfe97104/raw/f18ac0a421e392bc8a8cebeb9b9344e99de8c781/Tetris"
     prog = open(url).read()
 
     # 將程式載入編輯區
